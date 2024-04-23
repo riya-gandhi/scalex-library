@@ -1,16 +1,20 @@
+require("dotenv").config();
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const csvParser = require("csv-parser");
 
 const app = express();
-const PORT = 3000;
-const SECRET_KEY = "your_secret_key_here";
+const PORT = process.env.PORT || 3000;
+const SECRET_KEY = process.env.SECRET_KEY || "your_default_secret_key_here";
+
+app.use(express.json()); // Parse JSON bodies
 
 // Sample user data
 const USERS = {
   admin: { password: "admin_password", user_type: "admin" },
   user: { password: "user_password", user_type: "regular" },
+  "riya@swageazy.com": { password: "test1234", user_type: "regular" },
 };
 
 // JWT Token Validation Middleware
@@ -56,9 +60,10 @@ app.get("/home", tokenRequired, (req, res) => {
   )
     .pipe(csvParser())
     .on("data", (row) => {
-      books.push(row.bookName);
+      books.push(row["Book Name"]);
     })
     .on("end", () => {
+      console.log(books);
       res.json({ books: books });
     });
 });
