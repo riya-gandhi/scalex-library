@@ -14,7 +14,7 @@ app.use(express.json()); // Parse JSON bodies
 const USERS = {
   admin: { password: "admin_password", user_type: "admin" },
   user: { password: "user_password", user_type: "regular" },
-  "riya@swageazy.com": { password: "test1234", user_type: "regular" },
+  "riya@gmail.com": { password: "test1234", user_type: "regular" },
 };
 
 // JWT Token Validation Middleware
@@ -63,7 +63,6 @@ app.get("/home", tokenRequired, (req, res) => {
       books.push(row["Book Name"]);
     })
     .on("end", () => {
-      console.log(books);
       res.json({ books: books });
     });
 });
